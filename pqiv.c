@@ -57,6 +57,7 @@
 #ifdef GDK_WINDOWING_X11
 	#include <gdk/gdkx.h>
 	#include <X11/Xlib.h>
+	#include <X11/extensions/shape.h>
 	#include <X11/Xutil.h>
 	#include <cairo/cairo-xlib.h>
 
@@ -293,6 +294,7 @@ gboolean option_hide_info_box = FALSE;
 gboolean option_start_fullscreen = FALSE;
 gdouble option_initial_scale = 1.0;
 gboolean option_start_with_slideshow_mode = FALSE;
+gboolean option_click_through = FALSE;
 gboolean option_sort = FALSE;
 enum { NAME, MTIME } option_sort_key = NAME;
 gboolean option_shuffle = FALSE;
@@ -405,6 +407,7 @@ GOptionEntry options[] = {
 	{ "window-position", 'P', 0, G_OPTION_ARG_CALLBACK, &option_window_position_callback, "Set initial window position (`x,y' or `off' to not position the window at all)", "POSITION" },
 	{ "additional-from-stdin", 'r', 0, G_OPTION_ARG_NONE, &option_addl_from_stdin, "Read additional filenames/folders from stdin", NULL },
 	{ "slideshow", 's', 0, G_OPTION_ARG_NONE, &option_start_with_slideshow_mode, "Activate slideshow mode", NULL },
+	{ "click-through", 0, 0, G_OPTION_ARG_NONE, &option_click_through, "Window does not accept mouse input", NULL },
 	{ "scale-images-up", 't', G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, &option_scale_level_callback, "Scale images up to fill the whole screen", NULL },
 	{ "window-title", 'T', 0, G_OPTION_ARG_STRING, &option_window_title, "Set the title of the window. See manpage for available variables.", "TITLE" },
 	{ "zoom-level", 'z', 0, G_OPTION_ARG_DOUBLE, &option_initial_scale, "Set initial zoom level (1.0 is 100%)", "FLOAT" },
@@ -6749,6 +6752,21 @@ gboolean window_configure_callback(GtkWidget *widget, GdkEventConfigure *event, 
 		D_UNLOCK(file_tree);
 	}
 	#endif
+	
+	if(option_click_through) {
+		Display *display = GDK_SCREEN_XDISPLAY(gdk_screen_get_default());
+		#if GTK_MAJOR_VERSION >= 3
+			unsigned long window_xid = gdk_x11_window_get_xid(gtk_widget_get_window(GTK_WIDGET(main_window)));
+		#else
+			GdkWindow *window = gtk_widget_get_window(GTK_WIDGET(main_window));
+			unsigned long window_xid = GDK_WINDOW_XID(window);
+		#endif
+		Region region = XCreateRegion();
+		XRectangle rectangle = { 0, 0, 1, 1 };
+		XUnionRectWithRegion(&rectangle, region, region);
+		XShapeCombineRegion(display, window_xid, ShapeInput, 0, 0, region, ShapeSet);
+		XDestroyRegion(region);	
+	}
 
 	return FALSE;
 }/*}}}*/
