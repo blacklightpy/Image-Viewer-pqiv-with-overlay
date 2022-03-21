@@ -1,3 +1,10 @@
+# Fork Info
+This is a personal fork of [phillipberndt/pqiv](https://github.com/phillipberndt/pqiv) with click through and keep above features added by [mortoray/pqiv:feature/click-through](https://github.com/mortoray/pqiv/tree/feature/click-through). I created a new repo to keep it synced with updates from the original repository.
+
+
+<details>
+<summary>Original README</summary>
+
 PQIV README
 ===========
 
@@ -391,4 +398,5 @@ pqiv ≤ 0.3
  * See the old python release for information on that
    (in the **python** branch on github)
 
+</details>
 </details>
