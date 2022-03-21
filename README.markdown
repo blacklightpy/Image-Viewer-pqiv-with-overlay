@@ -1,6 +1,17 @@
 # Fork Info
 This is a personal fork of [phillipberndt/pqiv](https://github.com/phillipberndt/pqiv) with click through and keep above features added by [mortoray/pqiv:feature/click-through](https://github.com/mortoray/pqiv/tree/feature/click-through). I created a new repo to keep it synced with updates from the original repository.
 
+## Usage
+### Build from source
+#### Linux
+`cd` to where you want to download the source code to
+
+`git clone https://github.com/blacklightpy/Image-Viewer-pqiv-with-overlay.git`
+
+`cd Image-Viewer-pqiv-with-overlay`
+
+`./configure && make && sudo make install`
+
 
 <details>
 <summary>Original README</summary>
