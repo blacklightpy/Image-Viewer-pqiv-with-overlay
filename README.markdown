@@ -12,9 +12,8 @@ This is a personal fork of [phillipberndt/pqiv](https://github.com/phillipberndt
 
 `./configure && make && sudo make install`
 
-
 <details>
-<summary>Original README</summary>
+<summary><h1>Original README</h1></summary>
 
 PQIV README
 ===========
